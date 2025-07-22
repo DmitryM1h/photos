@@ -12,16 +12,6 @@ namespace Core.Configuration
 {
     public static class Configuration
     {
-        public static IServiceCollection ApplyDbContext(this IServiceCollection services, IConfiguration configuration)
-        {
-            var conn = configuration.GetConnectionString("MainDb")
-        ?? throw new InvalidOperationException("Connection string 'MainDb' not found.");
-
-            // попробовать AddPooledDbContext
-            services.AddDbContext<PhotosContext>(options => options.UseSqlServer
-                                                        (conn, x => x.MigrationsAssembly("Database.Migrations")));
-            return services;
-
-        }
+        
     }
 }
