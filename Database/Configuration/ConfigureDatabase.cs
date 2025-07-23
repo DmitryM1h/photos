@@ -8,6 +8,7 @@ using Core.Configuration;
 using Core.Context;
 using Core.entities;
 using Core.Interfaces;
+using Database.UnitsOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,7 @@ namespace Database.Configuration
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddScoped<IUnitOfWork, AddUserUnitOfWork>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
             var conn = configuration.GetConnectionString("MainDb")
         ?? throw new InvalidOperationException("Connection string 'MainDb' not found.");
 

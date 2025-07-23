@@ -2,6 +2,7 @@
 using Core.Context;
 using Core.Dtos;
 using Core.entities;
+using Core.Exceptions;
 using Core.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +14,11 @@ namespace photos.Controllers
     [ApiController]
     public class UserController(PhotosContext _dbContext, 
                                 IValidator<UserDto> _validator,
+                                IValidator<PhotoDto> _validatorPhoto,
                                 IMapper<UserDto,User> _mapUser,
-                                IUnitOfWork _unitOfwork) : ControllerBase
+                                IMapper<PhotoDto,Photo> _mapPhoto,
+                                IUnitOfWork _unitOfWork
+                                ) : ControllerBase
     {
         [HttpPost("user")]
         public async Task<ActionResult<UserDto>> AddUser([FromBody] UserDto user)
@@ -22,7 +26,7 @@ namespace photos.Controllers
             _validator.ValidateAndThrow(user);
             var us = _mapUser.Map(user);
 
-            await _unitOfwork.AddUserAsync(us);
+            await _unitOfWork.AddUserAsync(us);
             
             return(user); 
 
@@ -30,12 +34,16 @@ namespace photos.Controllers
         [HttpPost("Photo")]
         public async Task<ActionResult> UploadPhoto([FromBody]PhotoDto photo,[FromQuery] int userId)
         {
-            var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
-            if (u is null)
-                return BadRequest();
-            var p = new Photo() { Picture = photo.Picture,PublisherId = userId};
-            await _dbContext.Photos.AddAsync(p);
-            await _dbContext.SaveChangesAsync();
+            _validatorPhoto.ValidateAndThrow(photo);
+            var p = _mapPhoto.Map(photo);
+            try
+            {
+                await _unitOfWork.AddPhotoAsync(p, userId);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return Ok();
         }

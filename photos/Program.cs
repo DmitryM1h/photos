@@ -1,9 +1,9 @@
 ﻿using Core.Configuration;
 using Microsoft.OpenApi.Models;
-using Application;
 using FluentValidation;
 using Core.entities;
 using Database.Configuration;
+using Application.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

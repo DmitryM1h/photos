@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Core.entities;
 using FluentValidation;
 
-namespace Application
+namespace Application.Validators
 {
     public class UserDtoValidator : AbstractValidator<UserDto>
     {

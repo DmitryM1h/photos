@@ -12,7 +12,7 @@ namespace Core.entities
     public class Photo
     {
         public int Id { get; set; }
-        public byte[]? Picture { get; set; }
+        public byte[] Picture { get; set; }
         public int PublisherId { get; set; }
 
         [JsonIgnore]

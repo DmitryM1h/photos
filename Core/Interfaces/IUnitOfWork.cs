@@ -9,6 +9,7 @@ namespace Core.Interfaces
 {
     public interface IUnitOfWork
     {
+        Task<Photo> AddPhotoAsync(Photo photo, int userId);
         Task<User?> AddUserAsync(User user);
 
     }
