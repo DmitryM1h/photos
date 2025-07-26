@@ -43,9 +43,9 @@ namespace Database.UnitsOfWork
         {
             await using var tran = await _dbContext.Database.BeginTransactionAsync();
 
-           var u = await _dbContext.Users
-                        .FromSqlInterpolated($"select * from Users with (UPDLOCK,ROWLOCK) where Id ={userId}")
-                        .FirstOrDefaultAsync();
+            var u = await _dbContext.Users
+                         .FromSqlInterpolated($"select * from Users with (UPDLOCK,ROWLOCK) where Id ={userId}")
+                         .FirstOrDefaultAsync();
             //var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
             if (u is null)
             {

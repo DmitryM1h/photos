@@ -8,14 +8,13 @@ using Microsoft.Extensions.Logging;
 namespace Core.MiddleWare
 {
     public class ExceptionHandlingMiddleware(
-        RequestDelegate next,
-        ILogger<ExceptionHandlingMiddleware> logger)
+        RequestDelegate _next,
+        ILogger<ExceptionHandlingMiddleware> _logger)
     {
-        private readonly RequestDelegate _next = next;
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger = logger;
 
         public async Task InvokeAsync(HttpContext context)
         {
+            _logger.LogInformation("Сработал ExceptionHandler");
             try
             {
                 await _next(context);

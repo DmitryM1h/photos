@@ -23,7 +23,11 @@ builder.Services.AddLogging();
 
 var app = builder.Build();
 
+
+app.UseMiddleware<HttpRequestLoggerMiddleWare>();
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
 
 if (app.Environment.IsDevelopment())
