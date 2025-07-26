@@ -26,7 +26,10 @@ namespace Database.UnitsOfWork
 
             var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
             if (u is null)
+            {
+                await _dbContext.Database.RollbackTransactionAsync();
                 throw new UserNotFoundException(userId);
+            }
             photo.PublisherId = userId;
             await _dbContext.Photos.AddAsync(photo);
             await _dbContext.SaveChangesAsync();
@@ -40,9 +43,15 @@ namespace Database.UnitsOfWork
         {
             await using var tran = await _dbContext.Database.BeginTransactionAsync();
 
-            var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
+           var u = await _dbContext.Users
+                        .FromSqlInterpolated($"select * from Users with (UPDLOCK,ROWLOCK) where Id ={userId}")
+                        .FirstOrDefaultAsync();
+            //var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
             if (u is null)
+            {
+                await _dbContext.Database.RollbackTransactionAsync();
                 throw new UserNotFoundException(userId);
+            }
             _dbContext.Users.Remove(u);
             await _dbContext.SaveChangesAsync();
 
