@@ -22,21 +22,30 @@ namespace Database.UnitsOfWork
 
         public async Task<Photo> AddPhotoAsync(Photo photo, int userId)
         {
+            await using var tran = await _dbContext.Database.BeginTransactionAsync();
+
             var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
             if (u is null)
-                throw new UserNotFoundException(photo.Id);
+                throw new UserNotFoundException(userId);
+            photo.PublisherId = userId;
             await _dbContext.Photos.AddAsync(photo);
             await _dbContext.SaveChangesAsync();
             return photo;
+            await _dbContext.Database.CommitTransactionAsync();
+
         }
 
         public async Task<User> DeleteUserAsync(int userId)
         {
+            await using var tran = await _dbContext.Database.BeginTransactionAsync();
+
             var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
             if (u is null)
                 throw new UserNotFoundException(userId);
             _dbContext.Users.Remove(u);
             await _dbContext.SaveChangesAsync();
+
+            await _dbContext.Database.CommitTransactionAsync();
 
             return u;
         }

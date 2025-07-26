@@ -16,7 +16,7 @@ namespace Application.Configuration
 {
     public static class Configure
     {
-        public static IServiceCollection AddValidators(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
          => services
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 //.AddMappersFromAssembly(Assembly.GetExecutingAssembly())

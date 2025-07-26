@@ -1,35 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Text.Unicode;
-using System.Threading.Tasks;
+using Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Core.MiddleWare
 {
-    public class ExceptionHandlingMiddleware
+    public class ExceptionHandlingMiddleware(
+        RequestDelegate next,
+        ILogger<ExceptionHandlingMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-
-        public ExceptionHandlingMiddleware(
-            RequestDelegate next,
-            ILogger<ExceptionHandlingMiddleware> logger)
-        {
-            _next = next;
-            _logger = logger;
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger = logger;
 
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
                 await _next(context);
+            }
+            catch (UserNotFoundException exception)
+            {
+                _logger.LogError(
+                exception, "Exception occurred: {Message}", exception.Message);
+
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Title = "Server Error",
+                    Detail = exception.Message
+                };
+
+                context.Response.StatusCode =
+                    StatusCodes.Status404NotFound;
+
+                var options = new JsonSerializerOptions
+                {
+
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+                var json = JsonSerializer.Serialize(problemDetails, options);
+                await context.Response.WriteAsync(json);
             }
             catch (Exception exception)
             {
@@ -48,8 +62,7 @@ namespace Core.MiddleWare
 
                 var options = new JsonSerializerOptions
                 {
-                    //Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(allowedRanges: [UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic]),
-                    //WriteIndented = true,
+                 
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
                     WriteIndented = true,
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
