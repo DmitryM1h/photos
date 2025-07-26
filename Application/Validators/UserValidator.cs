@@ -23,7 +23,11 @@ namespace Application.Validators
                 .WithMessage("Не указан email");
             RuleFor(user => user.Age)
                 .NotNull()
-                .WithMessage("Не указан возраст");
+                .WithMessage("Не указан возраст")
+                .Must(t => t > 0)
+                .WithMessage("Не корректный возраст");
+            
+          
         }
     }
 }

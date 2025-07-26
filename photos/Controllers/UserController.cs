@@ -17,7 +17,8 @@ namespace photos.Controllers
                                 IValidator<PhotoDto> _validatorPhoto,
                                 IMapper<UserDto,User> _mapUser,
                                 IMapper<PhotoDto,Photo> _mapPhoto,
-                                IUnitOfWork _unitOfWork
+                                IUnitOfWork _unitOfWork,
+                                ILogger<UserController> logger
                                 ) : ControllerBase
     {
         [HttpPost("user")]
@@ -25,9 +26,8 @@ namespace photos.Controllers
         {
             _validator.ValidateAndThrow(user);
             var us = _mapUser.Map(user);
-
             var res = await _unitOfWork.AddUserAsync(us);
-            
+            logger.LogInformation("Пользователь был добавлен. Id = {userId}",res.Id);
             return Ok(res); 
 
         }
@@ -42,6 +42,7 @@ namespace photos.Controllers
             }
             catch (UserNotFoundException ex)
             {
+                logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
 

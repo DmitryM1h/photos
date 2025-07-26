@@ -5,10 +5,9 @@ using Core.entities;
 using Database.Configuration;
 using Application.Configuration;
 using System.Net.Http.Headers;
+using Core.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 
 builder.Services.AddControllers(opt =>
@@ -29,10 +28,17 @@ builder.Services.AddSwaggerGen(options =>
 
 
 builder.Services.AddValidators();
+
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddLogging();
 
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+
 
 
 
