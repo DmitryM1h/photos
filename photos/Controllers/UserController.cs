@@ -14,14 +14,7 @@ namespace photos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(PhotosContext _dbContext, 
-                                IValidator<PhotoDto> _validatorPhoto,
-                                IMapper<UserDto,User> _mapUser,
-                                IMapper<PhotoDto,Photo> _mapPhoto,
-                                IUnitOfWork _unitOfWork,
-                                ILogger<UserController> logger,
-                                IMediator _mediator
-                                ) : ControllerBase
+    public class UserController(IMediator _mediator) : ControllerBase
     {
         [HttpPost("Add")]
         public async Task<ActionResult<UserDto>> AddUser([FromBody] UserDto user)
