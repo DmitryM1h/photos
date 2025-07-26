@@ -10,7 +10,13 @@ namespace Core.Interfaces
     public interface IUnitOfWork
     {
         Task<Photo> AddPhotoAsync(Photo photo, int userId);
-        Task<User?> AddUserAsync(User user);
+        Task<User> AddUserAsync(User user);
+        Task<User> DeleteUserAsync(int userId);
+        Task<User> GetUserWithPhotosAsync(int userId);
+        Task<User> GetUserAsync(int userId);
+
+
+
 
     }
 }

@@ -28,6 +28,8 @@ namespace Application.Configuration
                     // че то тут
                 });
 
+           //AddTransient.TypeOf();
+
 
         
     }

@@ -26,9 +26,9 @@ namespace photos.Controllers
             _validator.ValidateAndThrow(user);
             var us = _mapUser.Map(user);
 
-            await _unitOfWork.AddUserAsync(us);
+            var res = await _unitOfWork.AddUserAsync(us);
             
-            return(user); 
+            return Ok(res); 
 
         }
         [HttpPost("Photo")]
@@ -51,39 +51,43 @@ namespace photos.Controllers
         [HttpDelete("user")]
         public async Task<ActionResult> DeleteUser([FromQuery] int userId)
         {
-            var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
-            if (u is null)
-                return Ok();
-            _dbContext.Users.Remove(u);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _unitOfWork.DeleteUserAsync(userId);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return Ok();
         }
 
         [HttpGet("UserWithPhotos")]
         public async Task<ActionResult<UserWithPhoto>> GetUserWithPhotos([FromQuery] int userId)
         {
-            var u = await _dbContext.Users.Include(t => t.Photos).Where(t => t.Id == userId).FirstOrDefaultAsync();
-            if (u is null)
-                return NotFound();
-            return Ok(u);
+            try
+            {
+                var us = await _unitOfWork.GetUserWithPhotosAsync(userId);
+                return Ok(us);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("user")]
         public async Task<ActionResult<UserDto>> GetUser([FromQuery] int userId)
         {
-            var u = await _dbContext.Users.Where(t => t.Id == userId).FirstOrDefaultAsync();
-            if (u is null)
-                return NotFound();
-            return Ok(u);
-        }
-
-        [HttpGet("photo")]
-        public async Task<ActionResult<PhotoDto>> GetPhoto([FromQuery] int photoId)
-        {
-            var p = await _dbContext.Photos.Where(t => t.Id == photoId).FirstOrDefaultAsync();
-            if (p is null)
-                return NotFound();
-            return Ok(p);
+            try
+            {
+                var us = await _unitOfWork.GetUserAsync(userId);
+                return Ok(us);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         
     }

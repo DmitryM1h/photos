@@ -4,13 +4,25 @@ using FluentValidation;
 using Core.entities;
 using Database.Configuration;
 using Application.Configuration;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt =>
+{
+    opt.FormatterMappings.SetMediaTypeMappingForFormat("xml", "application/xml");
+    opt.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
+
+}
+).AddXmlSerializerFormatters()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
