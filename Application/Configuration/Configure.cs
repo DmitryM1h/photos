@@ -19,9 +19,7 @@ namespace Application.Configuration
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
          => services
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
-                //.AddMappersFromAssembly(Assembly.GetExecutingAssembly())
-                .AddScoped<IMapper<UserDto, User>, UserMapper>()
-                .AddScoped<IMapper<PhotoDto, Photo>, PhotoMapper>()
+                .AddMappersFromAssembly(Assembly.GetExecutingAssembly())
                 .AddMediatR(t =>
                 {
                     t.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
