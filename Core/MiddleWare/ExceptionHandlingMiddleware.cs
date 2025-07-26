@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,15 @@ namespace Core.MiddleWare
                 context.Response.StatusCode =
                     StatusCodes.Status500InternalServerError;
 
-                var json = JsonSerializer.Serialize(problemDetails);
+                var options = new JsonSerializerOptions
+                {
+                    //Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(allowedRanges: [UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic]),
+                    //WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+                var json = JsonSerializer.Serialize(problemDetails,options);
                 await context.Response.WriteAsync(json);
             }
         }

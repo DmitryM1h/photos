@@ -36,59 +36,33 @@ namespace photos.Controllers
         {
             _validatorPhoto.ValidateAndThrow(photo);
             var p = _mapPhoto.Map(photo);
-            try
-            {
-                await _unitOfWork.AddPhotoAsync(p, userId);
-            }
-            catch (UserNotFoundException ex)
-            {
-                logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
-            }
-
+            await _unitOfWork.AddPhotoAsync(p, userId);
             return Ok();
         }
 
         [HttpDelete("user")]
         public async Task<ActionResult> DeleteUser([FromQuery] int userId)
         {
-            try
-            {
-                await _unitOfWork.DeleteUserAsync(userId);
-            }
-            catch (UserNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            await _unitOfWork.DeleteUserAsync(userId);
+
             return Ok();
         }
 
         [HttpGet("UserWithPhotos")]
         public async Task<ActionResult<UserWithPhoto>> GetUserWithPhotos([FromQuery] int userId)
         {
-            try
-            {
-                var us = await _unitOfWork.GetUserWithPhotosAsync(userId);
-                return Ok(us);
-            }
-            catch (UserNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            var us = await _unitOfWork.GetUserWithPhotosAsync(userId);
+            return Ok(us);
+
         }
 
         [HttpGet("user")]
         public async Task<ActionResult<UserDto>> GetUser([FromQuery] int userId)
         {
-            try
-            {
-                var us = await _unitOfWork.GetUserAsync(userId);
-                return Ok(us);
-            }
-            catch (UserNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var us = await _unitOfWork.GetUserAsync(userId);
+            return Ok(us);
         }
         
     }

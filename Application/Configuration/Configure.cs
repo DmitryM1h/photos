@@ -25,7 +25,7 @@ namespace Application.Configuration
                 .AddMediatR(t =>
                 {
                     t.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                    // че то тут
+                    
                 });
 
            //AddTransient.TypeOf();

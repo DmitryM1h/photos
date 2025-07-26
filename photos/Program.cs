@@ -6,21 +6,12 @@ using Database.Configuration;
 using Application.Configuration;
 using System.Net.Http.Headers;
 using Core.MiddleWare;
+using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers(opt =>
-{
-    opt.FormatterMappings.SetMediaTypeMappingForFormat("xml", "application/xml");
-    opt.FormatterMappings.SetMediaTypeMappingForFormat("json", "application/json");
-
-}
-).AddXmlSerializerFormatters()
-.AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.PropertyNamingPolicy = null;
-});
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
