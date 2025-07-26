@@ -30,8 +30,9 @@ namespace Database.UnitsOfWork
             photo.PublisherId = userId;
             await _dbContext.Photos.AddAsync(photo);
             await _dbContext.SaveChangesAsync();
-            return photo;
             await _dbContext.Database.CommitTransactionAsync();
+
+            return photo;
 
         }
 
