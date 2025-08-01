@@ -3,8 +3,6 @@
 POST {{photos_HostAddress}}/api/user
 Content-Type: application/json
 
-{
-  //UserDto
-}
+
 
 ###

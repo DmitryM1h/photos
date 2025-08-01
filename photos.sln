@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{EBEBFB1F-23E0-4DB5-93E3-BC435B5B7214}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailer", "Mailer\Mailer.csproj", "{D0AFEE6B-BF54-4622-A2EE-DBEC367B11BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EBEBFB1F-23E0-4DB5-93E3-BC435B5B7214}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBEBFB1F-23E0-4DB5-93E3-BC435B5B7214}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBEBFB1F-23E0-4DB5-93E3-BC435B5B7214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0AFEE6B-BF54-4622-A2EE-DBEC367B11BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0AFEE6B-BF54-4622-A2EE-DBEC367B11BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0AFEE6B-BF54-4622-A2EE-DBEC367B11BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0AFEE6B-BF54-4622-A2EE-DBEC367B11BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
