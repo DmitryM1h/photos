@@ -1,7 +1,9 @@
 ﻿using Microsoft.OpenApi.Models;
 using Database.Configuration;
 using Application.Configuration;
+using Auth;
 using Core.MiddleWare;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,11 @@ builder.Services.AddSwaggerGen(options =>
 
 
 
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddAuth();
+    
 builder.Services.AddApplicationServices();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -41,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
