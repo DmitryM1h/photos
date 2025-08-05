@@ -9,6 +9,7 @@ namespace Core.Dtos
 {
     public class PhotoDto
     {
-        public byte[]? Picture { get; set; }
+
+        public byte[]? Picture { get; set; } = null!;
     }
 }

@@ -12,10 +12,10 @@ namespace Core.entities
     public class Photo
     {
         public int Id { get; set; }
-        public byte[] Picture { get; set; }
+        public byte[] Picture { get; set; } = null!;
         public int PublisherId { get; set; }
 
         [JsonIgnore]
-        public User Publisher { get; set; }
+        public User Publisher { get; set; } = null!;
     }
 }

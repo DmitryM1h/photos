@@ -34,21 +34,6 @@ namespace photos.Controllers
             return Ok(res);
         }
 
-        
-        [HttpPost("login")]
-        public string Login([FromBody] LogDto logDto)
-        {
-            var claims = new List<Claim> {new Claim(ClaimTypes.Name, "dmitry"),new  Claim(ClaimTypes.Role,"user") };
-            var jwt = new JwtSecurityToken(
-                issuer: AuthOptions.Issuer,
-                audience: AuthOptions.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
-            //return Ok();
-        }
 
         [HttpDelete("Delete")]
         public async Task<ActionResult> DeleteUser([FromQuery] int userId)
