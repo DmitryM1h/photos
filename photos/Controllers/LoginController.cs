@@ -15,7 +15,7 @@ namespace photos.Controllers
         [HttpPost("login")]
         public string Login([FromBody] LogDto logDto)
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "dmitry"), new Claim(ClaimTypes.Role, "user") };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, logDto.Login), new Claim(ClaimTypes.Role, nameof(Role.User))};
             var jwt = new JwtSecurityToken(
                 issuer: AuthOptions.Issuer,
                 audience: AuthOptions.Audience,
