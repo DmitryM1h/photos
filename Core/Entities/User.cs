@@ -10,7 +10,6 @@ namespace Core.entities
 {
     public class User
     {
-        [Required]
         public int Id { get; set; }
         public required string Name { get; set; }
         public int? Age { get; set; }

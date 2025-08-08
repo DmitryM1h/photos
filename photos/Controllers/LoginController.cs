@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Core.Context;
+using Core.entities;
+using Core.Interfaces;using Core.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace photos.Controllers
 {
@@ -23,8 +27,10 @@ namespace photos.Controllers
                 expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
-            //return Ok();
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            HttpContext.Response.Cookies.Append("Mycookies", token);
+            
+            return Ok(token);
         }
     }
 }
