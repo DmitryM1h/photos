@@ -7,8 +7,8 @@ using Core.entities;
 
 namespace Core.Interfaces
 {
-    public interface IMapper<Tin,Tout>
+    public interface IMapper<in TIn,out TOut>
     {
-        public Tout Map(Tin obj);
+        public TOut Map(TIn obj);
     }
 }
